@@ -66,14 +66,6 @@ abstract class Task : ITask {
         return false
     }
 
-    /**
-     * Task的优先级，运行在主线程则不要去改优先级
-     *
-     * @return
-     */
-    override fun priority(): Int {
-        return Process.THREAD_PRIORITY_BACKGROUND
-    }
 
     /**
      * Task执行在哪个线程池，默认在IO的线程池；
@@ -85,14 +77,7 @@ abstract class Task : ITask {
         return DispatcherExecutor.iOExecutor
     }
 
-    /**
-     * 异步线程执行的Task是否需要在被调用await的时候等待，默认不需要
-     *
-     * @return
-     */
-    override fun needWait(): Boolean {
-        return false
-    }
+
 
     /**
      * 当前Task依赖的Task集合（需要等待被依赖的Task执行完毕才能执行自己），默认没有依赖
@@ -114,27 +99,6 @@ abstract class Task : ITask {
     override val tailRunnable: Runnable?
         get() = null
 
-    override fun setTaskCallBack(callBack: TaskCallBack?) {}
 
-    override fun needCall(): Boolean {
-        return false
-    }
 
-    /**
-     * 是否只在主进程，默认是
-     *
-     * @return
-     */
-    override fun onlyInMainProcess(): Boolean {
-        return true
-    }
-}
-
-/**
- * 主线程任务
- */
-abstract class MainTask : Task() {
-    override fun runOnMainThread(): Boolean {
-        return true
-    }
 }

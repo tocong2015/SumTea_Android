@@ -23,12 +23,9 @@ import java.util.concurrent.ExecutorService
  * 初始化全局帮助类
  */
 class InitSumHelperTask(val application: Application) : Task() {
-    //异步线程执行的Task在被调用await的时候等待
-    override fun needWait(): Boolean {
-        return true
-    }
 
     override fun run() {
+        LogUtil.d("${this::class.java.simpleName} 在执行")
         SumAppHelper.init(application, BuildConfig.DEBUG)
     }
 }
@@ -37,11 +34,6 @@ class InitSumHelperTask(val application: Application) : Task() {
  * 初始化MMKV
  */
 class InitMmkvTask() : Task() {
-
-    //异步线程执行的Task在被调用await的时候等待
-    override fun needWait(): Boolean {
-        return true
-    }
 
     //依赖某些任务，在某些任务完成后才能执行
     override fun dependsOn(): MutableList<Class<out Task>> {
@@ -57,6 +49,7 @@ class InitMmkvTask() : Task() {
 
     //执行任务初始化
     override fun run() {
+        LogUtil.d("${this::class.java.simpleName} 在执行")
         val rootDir: String = MMKV.initialize(SumAppHelper.getApplication())
         MMKV.setLogLevel(
             if (BuildConfig.DEBUG) {
@@ -65,7 +58,6 @@ class InitMmkvTask() : Task() {
                 MMKVLogLevel.LevelError
             }
         )
-        LogUtil.d("mmkv root: $rootDir", tag = "MMKV")
     }
 }
 
@@ -73,10 +65,7 @@ class InitMmkvTask() : Task() {
  * 初始化AppManager
  */
 class InitAppManagerTask() : Task() {
-    //异步线程执行的Task在被调用await的时候等待
-    override fun needWait(): Boolean {
-        return true
-    }
+
 
     //依赖某些任务，在某些任务完成后才能执行
     override fun dependsOn(): MutableList<Class<out Task>> {
@@ -86,6 +75,7 @@ class InitAppManagerTask() : Task() {
     }
 
     override fun run() {
+        LogUtil.d("${this::class.java.simpleName} 在执行")
         AppManager.init(SumAppHelper.getApplication())
     }
 }
@@ -94,12 +84,9 @@ class InitAppManagerTask() : Task() {
  * 全局初始化SmartRefreshLayout
  */
 class InitRefreshLayoutTask() : Task() {
-    //异步线程执行的Task在被调用await的时候等待
-    override fun needWait(): Boolean {
-        return true
-    }
 
     override fun run() {
+        LogUtil.d("${this::class.java.simpleName} 在执行")
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
             layout.setPrimaryColorsId(android.R.color.white)
@@ -119,9 +106,7 @@ class InitRefreshLayoutTask() : Task() {
  */
 class InitArouterTask() : Task() {
     //异步线程执行的Task在被调用await的时候等待
-    override fun needWait(): Boolean {
-        return true
-    }
+
 
     //依赖某些任务，在某些任务完成后才能执行
     override fun dependsOn(): MutableList<Class<out Task>> {
@@ -132,6 +117,7 @@ class InitArouterTask() : Task() {
 
     //执行任务，任务真正的执行逻辑
     override fun run() {
+        LogUtil.d("${this::class.java.simpleName} 在执行")
         // 这两行必须写在init之前，否则这些配置在init过程中将无效
         if (BuildConfig.DEBUG) {
             // 开启打印日志
@@ -140,25 +126,5 @@ class InitArouterTask() : Task() {
             ARouter.openDebug()
         }
         ARouter.init(SumAppHelper.getApplication())
-    }
-}
-
-/**
- * 初始化A
- */
-class InitTaskA() : Task() {
-
-    override fun run() {
-        //...
-    }
-}
-
-/**
- * 初始化B
- */
-class InitTaskB() : Task() {
-
-    override fun run() {
-        //...
     }
 }

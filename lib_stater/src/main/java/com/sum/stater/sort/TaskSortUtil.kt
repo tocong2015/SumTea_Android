@@ -21,7 +21,6 @@ object TaskSortUtil {
         originTasks: List<Task>,
         clsLaunchTasks: List<Class<out Task>>
     ): List<Task> {
-        val makeTime = System.currentTimeMillis()
         val dependSet: MutableSet<Int> = ArraySet()
         val graph = DirectionGraph(originTasks.size)
 
@@ -48,8 +47,6 @@ object TaskSortUtil {
 
         val indexList: List<Int> = graph.topologicalSort()
         val newTasksAll = getResultTasks(originTasks, dependSet, indexList)
-        DispatcherLog.i("task analyse cost makeTime " + (System.currentTimeMillis() - makeTime))
-        printAllTaskName(newTasksAll, false)
         return newTasksAll
     }
 
@@ -88,18 +85,6 @@ object TaskSortUtil {
         newTasksAll.addAll(newTasksWithOutDepend)
         return newTasksAll
     }
-
-    private fun printAllTaskName(newTasksAll: List<Task>, isPrintName: Boolean) {
-        if (!isPrintName) {
-            return
-        }
-        for (task in newTasksAll) {
-            DispatcherLog.i(task.javaClass.simpleName)
-        }
-    }
-
-    val tasksHigh: List<Task>
-        get() = sNewTasksHigh
 
     /**
      * 获取任务在任务列表中的index
