@@ -14,9 +14,6 @@ import java.util.concurrent.ExecutorService
 abstract class Task : ITask {
     protected var mContext: Context? = context
 
-    // 当前进程是否是主进程
-    protected var mIsMainProcess: Boolean = TaskDispatcher.isMainProcess
-
     // 是否正在等待
     @Volatile
     var isWaiting = false

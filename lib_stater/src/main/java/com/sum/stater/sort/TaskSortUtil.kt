@@ -2,7 +2,6 @@ package com.sum.stater.sort
 
 import androidx.collection.ArraySet
 import com.sum.stater.task.Task
-import com.sum.stater.utils.DispatcherLog
 
 /**
  * 任务排序

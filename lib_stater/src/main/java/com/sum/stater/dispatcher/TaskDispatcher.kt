@@ -6,7 +6,6 @@ import androidx.annotation.UiThread
 import com.sum.stater.sort.TaskSortUtil
 import com.sum.stater.task.DispatchRunnable
 import com.sum.stater.task.Task
-import com.sum.stater.utils.DispatcherLog
 import com.sum.stater.utils.StaterUtils
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Future
