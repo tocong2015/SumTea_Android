@@ -22,6 +22,7 @@ class DispatchRunnable : Runnable {
     override fun run() {
 
         mTask.isWaiting = true
+        //此 DispatchRunnable 运行在哪个线程，哪个线程就会挂起，直到mTask一直countDown到0,才会继续运行下去
         mTask.waitToSatisfy()
 
 
