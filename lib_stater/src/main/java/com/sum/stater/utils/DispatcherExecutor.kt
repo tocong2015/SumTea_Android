@@ -1,6 +1,13 @@
 package com.sum.stater.utils
 
-import java.util.concurrent.*
+import java.util.concurrent.BlockingQueue
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.RejectedExecutionHandler
+import java.util.concurrent.ThreadFactory
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -10,10 +17,6 @@ object DispatcherExecutor {
     private val CPU_COUNT = Runtime.getRuntime().availableProcessors()
     private val CORE_POOL_SIZE = 2.coerceAtLeast((CPU_COUNT - 1).coerceAtMost(5))
     private val MAXIMUM_POOL_SIZE = CORE_POOL_SIZE
-
-    // We want at least 2 threads and at most 4 threads in the core pool,
-    // preferring to have 1 less than the CPU count to avoid saturating
-    // the CPU with background work
     private const val KEEP_ALIVE_SECONDS = 5
     private val sPoolWorkQueue: BlockingQueue<Runnable> = LinkedBlockingQueue()
     private val sThreadFactory = DefaultThreadFactory()
