@@ -1,8 +1,7 @@
 package com.sum.stater.task
 
 import android.content.Context
-import android.os.Process
-import com.sum.stater.dispatcher.TaskDispatcher
+import com.sum.framework.log.LogUtil
 import com.sum.stater.dispatcher.TaskDispatcher.Companion.context
 import com.sum.stater.utils.DispatcherExecutor
 import java.util.concurrent.CountDownLatch
@@ -40,6 +39,7 @@ abstract class Task : ITask {
      */
     fun waitToSatisfy() {
         try {
+            LogUtil.d("${this::class.java.simpleName}开始等待")
             mDepends.await()
         } catch (e: InterruptedException) {
             e.printStackTrace()

@@ -23,6 +23,11 @@ import java.util.concurrent.ExecutorService
  * 初始化全局帮助类
  */
 class InitSumHelperTask(val application: Application) : Task() {
+    override fun dependsOn(): MutableList<Class<out Task>> {
+        val tasks = mutableListOf<Class<out Task?>>()
+        tasks.add(CTask::class.java)
+        return tasks
+    }
 
     override fun run() {
         LogUtil.d("${this::class.java.simpleName} 在执行")
@@ -45,6 +50,10 @@ class InitMmkvTask() : Task() {
     //指定线程池
     override fun runOn(): ExecutorService? {
         return DispatcherExecutor.iOExecutor
+    }
+
+    override fun runOnMainThread(): Boolean {
+        return true
     }
 
     //执行任务初始化
@@ -127,4 +136,47 @@ class InitArouterTask() : Task() {
         }
         ARouter.init(SumAppHelper.getApplication())
     }
+}
+
+class ATask() : Task() {
+    override fun run() {
+        LogUtil.d("${this::class.java.simpleName} 在执行")
+    }
+
+    override fun runOnMainThread(): Boolean {
+        return true
+    }
+}
+
+class BTask() : Task() {
+    override fun run() {
+        LogUtil.d("${this::class.java.simpleName} 在执行")
+    }
+
+    override fun dependsOn(): List<Class<out Task?>?>? {
+        val tasks = mutableListOf<Class<out Task?>>()
+        tasks.add(ATask::class.java)
+        return tasks
+    }
+
+}
+
+
+class CTask() : Task() {
+    override fun run() {
+        LogUtil.d("${this::class.java.simpleName} 在执行")
+    }
+
+    override fun dependsOn(): List<Class<out Task?>?>? {
+        val tasks = mutableListOf<Class<out Task?>>()
+        tasks.add(ATask::class.java)
+        tasks.add(BTask::class.java)
+        return tasks
+    }
+
+    override fun runOnMainThread(): Boolean {
+        return true
+    }
+
+
 }

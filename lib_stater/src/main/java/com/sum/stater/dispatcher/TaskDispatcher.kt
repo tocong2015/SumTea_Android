@@ -3,6 +3,7 @@ package com.sum.stater.dispatcher
 import android.app.Application
 import android.os.Looper
 import androidx.annotation.UiThread
+import com.sum.framework.log.LogUtil
 import com.sum.stater.sort.TaskSortUtil
 import com.sum.stater.task.DispatchRunnable
 import com.sum.stater.task.Task
@@ -84,6 +85,9 @@ class TaskDispatcher private constructor() {
 
         if (mAllTasks.isNotEmpty()) {
             mAllTasks = TaskSortUtil.getSortResult(mAllTasks, mClsAllTasks).toMutableList()
+            LogUtil.d(mAllTasks.joinToString {
+                it::class.java.simpleName
+            })
             mCountDownLatch = CountDownLatch(mNeedWaitCount.get())
             sendAndExecuteAsyncTasks()
             executeTaskMain()
@@ -103,6 +107,7 @@ class TaskDispatcher private constructor() {
     private fun executeTaskMain() {
         mStartTime = System.currentTimeMillis()
         for (task in mMainThreadTasks) {
+            LogUtil.d("主线程task :${task::class.java.simpleName}  准备开始执行了")
             DispatchRunnable(task, this).run()
         }
 
@@ -135,8 +140,8 @@ class TaskDispatcher private constructor() {
     }
 
     fun markTaskDone(task: Task) {
+        mFinishedTasks.add(task.javaClass)
         if (ifNeedWait(task)) {
-            mFinishedTasks.add(task.javaClass)
             mNeedWaitTasks.remove(task)
             mCountDownLatch?.countDown()
             mNeedWaitCount.getAndDecrement()

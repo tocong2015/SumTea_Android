@@ -1,5 +1,6 @@
 package com.sum.stater.task
 
+import com.sum.framework.log.LogUtil
 import com.sum.stater.dispatcher.TaskDispatcher
 
 /**
@@ -25,20 +26,21 @@ class DispatchRunnable : Runnable {
 
 
         // 执行Task
+        LogUtil.d("${mTask::class.java.simpleName} 开始执行任务体")
         mTask.isRunning = true
         mTask.run()
 
         // 执行Task的尾部任务
         val tailRunnable = mTask.tailRunnable
         tailRunnable?.run()
-        if ( !mTask.runOnMainThread()) {
 
-            mTask.isFinished = true
-            mTaskDispatcher?.let {
-                it.satisfyChildren(mTask)
-                it.markTaskDone(mTask)
-            }
+
+        mTask.isFinished = true
+        mTaskDispatcher?.let {
+            it.satisfyChildren(mTask)
+            it.markTaskDone(mTask)
         }
+
     }
 
 }

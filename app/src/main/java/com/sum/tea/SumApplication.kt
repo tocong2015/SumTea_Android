@@ -5,16 +5,19 @@ import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import androidx.multidex.MultiDex
-import com.sum.framework.manager.AppFrontBack
-import com.sum.framework.manager.AppFrontBackListener
 import com.sum.framework.log.LogUtil
 import com.sum.framework.manager.ActivityManager
+import com.sum.framework.manager.AppFrontBack
+import com.sum.framework.manager.AppFrontBackListener
 import com.sum.framework.toast.TipsToast
 import com.sum.stater.dispatcher.TaskDispatcher
-import com.sum.tea.task.InitMmkvTask
+import com.sum.tea.task.ATask
+import com.sum.tea.task.BTask
+import com.sum.tea.task.CTask
 import com.sum.tea.task.InitAppManagerTask
-import com.sum.tea.task.InitRefreshLayoutTask
 import com.sum.tea.task.InitArouterTask
+import com.sum.tea.task.InitMmkvTask
+import com.sum.tea.task.InitRefreshLayoutTask
 import com.sum.tea.task.InitSumHelperTask
 
 /**
@@ -45,11 +48,14 @@ class SumApplication : Application() {
 
         //3.添加任务并且启动任务
         dispatcher.addTask(InitSumHelperTask(this))
-                .addTask(InitMmkvTask())
-                .addTask(InitAppManagerTask())
-                .addTask(InitRefreshLayoutTask())
-                .addTask(InitArouterTask())
-                .start()
+            .addTask(ATask())
+            .addTask(BTask())
+            .addTask(CTask())
+            .addTask(InitMmkvTask())
+            .addTask(InitAppManagerTask())
+            .addTask(InitRefreshLayoutTask())
+            .addTask(InitArouterTask())
+            .start()
 
         //4.等待，需要等待的方法执行完才可以往下执行
         dispatcher.await()
