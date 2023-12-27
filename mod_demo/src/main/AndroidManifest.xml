@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        package="com.sum.demo">
+    package="com.sum.demo">
 
     <application>
         <activity
@@ -9,16 +8,20 @@
                 android:theme="@style/Theme.BaseTheme" />
         <activity
                 android:name=".navigation.NavActivity"
-                android:theme="@style/Theme.BaseTheme" />
+            android:theme="@style/Theme.BaseTheme" />
         <activity
-                android:name=".lifecycle.DemoLifecycleActivity"
-                android:theme="@style/Theme.BaseTheme" />
+            android:name=".lifecycle.DemoLifecycleActivity"
+            android:theme="@style/Theme.BaseTheme" />
         <activity
-                android:name=".viewmodel.DemoViewModelActivity"
-                android:theme="@style/Theme.BaseTheme" />
+            android:name=".viewmodel.DemoViewModelActivity"
+            android:theme="@style/Theme.BaseTheme" />
         <activity
-                android:name=".livedata.DemoLiveDataActivity"
-                android:theme="@style/Theme.BaseTheme" />
+            android:name=".livedata.DemoLiveDataActivity"
+            android:theme="@style/Theme.BaseTheme" />
+
+        <activity
+            android:name=".viewbinding.ViewPagerActivity"
+            android:theme="@style/Theme.BaseTheme" />
     </application>
 
 </manifest>

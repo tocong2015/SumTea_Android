@@ -19,10 +19,13 @@ abstract class BaseDataBindFragment<DB : ViewBinding> : BaseFragment() {
 
     override fun getContentView(inflater: LayoutInflater, container: ViewGroup?): View {
 //        mBinding = DataBindingUtil.inflate(inflater, getLayoutResId(), container, false)
-        val type = javaClass.genericSuperclass
-        val vbClass: Class<DB> = type!!.saveAs<ParameterizedType>().actualTypeArguments[0].saveAs()
-        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
-        mBinding = method.invoke(this, layoutInflater)!!.saveAsUnChecked()
+        if (mBinding == null) {
+            val type = javaClass.genericSuperclass
+            val vbClass: Class<DB> =
+                type!!.saveAs<ParameterizedType>().actualTypeArguments[0].saveAs()
+            val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+            mBinding = method.invoke(this, layoutInflater)!!.saveAsUnChecked()
+        }
         return mBinding!!.root
     }
 
@@ -30,6 +33,6 @@ abstract class BaseDataBindFragment<DB : ViewBinding> : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mBinding = null
+        //mBinding = null
     }
 }
